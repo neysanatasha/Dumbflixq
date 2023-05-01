@@ -33,7 +33,7 @@ export default function Jumbotrons() {
       console.log(item)
     return (
       <Carousel.Item>
-        <img key={item.id} className="d-block w-100 rounded" src={`http://localhost:5000/uploads/${item.thumbnailfilm}`} alt="First slide"/>
+        <img key={item.id} className="d-block w-100 rounded" src={`${item.thumbnailfilm}`} alt="First slide"/>
         <Carousel.Caption className='mb-5'>  
           <h1 className="fw-bold" style={{fontSize:"70px"}}>{item.title}</h1>
           <div style={{paddingLeft:"69px", paddingRight:"69px"}}>

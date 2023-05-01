@@ -94,7 +94,8 @@ export default function Profile() {
             </div>
           </div>
           <div className="d-grid ms-auto p-5 mb-2">
-              <img src={profile?.photo ? `http://localhost:5000/uploads/${profile.photo}` : User} className="mt-2 rounded-2" style={{objectFit:"cover"}} width="300px" height="370px" alt="Profile" />
+              <img src={profile?.photo ? `${profile.photo}` : User}
+ className="mt-2 rounded-2" style={{objectFit:"cover"}} width="300px" height="370px" alt="Profile" />
               <Button className="border-0" type="submit" onClick={handleShowShipping} style={{backgroundColor:"#E50914"}}>Change Photo Profile</Button> 
           </div>
           {console.log(profile.photo)}

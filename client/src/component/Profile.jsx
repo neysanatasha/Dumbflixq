@@ -30,8 +30,8 @@ export default function Profile() {
   document.title = "Dumbflix | " + title;
 
 
-  let { data: profile } = useQuery('profileCache', async () => {
-    const response = await API.get(`/profile`);
+  let { data : profile } = useQuery('profileCache', async () => {
+    const response = await API.patch(`/profile`);
     return response.data.data;
   }, {refetchInterval : 1000});
   
@@ -97,6 +97,7 @@ export default function Profile() {
               <img src={profile?.photo ? `http://localhost:5000/uploads/${profile.photo}` : User} className="mt-2 rounded-2" style={{objectFit:"cover"}} width="300px" height="370px" alt="Profile" />
               <Button className="border-0" type="submit" onClick={handleShowShipping} style={{backgroundColor:"#E50914"}}>Change Photo Profile</Button> 
           </div>
+          {console.log(profile.photo)}
        </div> 
       </div>
     </Container>

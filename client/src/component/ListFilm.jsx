@@ -85,7 +85,7 @@ function ListFilm() {
           <h4 className="text-light fw-semibold">List Film</h4>
           <br/>
 
-          <div className="card-group d-flex gap-4">
+          <div style={{flexWrap:"wrap"}} className="card-group d-flex gap-4 ">
             <GetlistFilm />
           </div>
         </div>

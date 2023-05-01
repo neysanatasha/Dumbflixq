@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 import { useMutation } from "react-query";
 
 
-function AddEpisodeModal({ isOpen, closeModal }) {
+function AddEpisodeModal({ isOpen, closeModal ,refetch}) {
   const [addEpisode, setAddEpisode] = useState({});
   const {id} = useParams()
   function handleSubmit(event) {
@@ -59,7 +59,7 @@ function AddEpisodeModal({ isOpen, closeModal }) {
           showConfirmButton: false,
           timer: 2000,
         });
-      
+      refetch()
     } catch (error) {
       Swal.fire({
         position: "center",

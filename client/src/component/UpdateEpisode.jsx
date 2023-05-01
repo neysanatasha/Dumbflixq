@@ -1,93 +1,266 @@
+// import Modal from "react-modal";
+// import { useState } from "react";
+// import { FaRegEdit} from "react-icons/fa";
+// import { useParams } from "react-router-dom";
+// import { useMutation, useQuery } from "react-query";
+// import Swal from "sweetalert2";
+// import { API } from "../config/api";
+// import { useEffect } from "react";
+
+// function UpdateEpisodeModal({ isOpen, closeModal, selectedEpisode,onSave }) {
+//   const [episodeData, setEpisodeData] = useState({});
+//   const [imageUrl, setImageUrl] = useState("");
+ 
+
+//   useEffect(() => {
+//     setEpisodeData(selectedEpisode);
+//   }, [selectedEpisode]);
+
+//   const handleInputChange = (event) => {
+//     const { name, value, type, files } = event.target;
+
+//     if (type === "file") {
+//       setEpisodeData({
+//         ...episodeData,
+//         [name]: files,
+//       });
+
+//       const url = URL.createObjectURL(files[0]);
+//       setImageUrl(url);
+//     } else {
+//       setEpisodeData({
+//         ...episodeData,
+//         [name]: value,
+//       });
+//     }
+//   };
+
+//   const updateEpisode = async (event) => {
+//     event.preventDefault();
+
+//     try {
+//       const formData = new FormData();
+//       formData.append("title", episodeData.title);
+//       formData.append("linkfilm", episodeData.linkfilm);
+
+//       if (episodeData.thumbnailfilm) {
+//         formData.append("thumbnailfilm", episodeData.thumbnailfilm[0]);
+//       }
+//       onSave(formData);
+
+//       const config = {
+//         headers: {
+//           "Content-Type": "multipart/form-data",
+//         },
+//       };
+
+//       const response = await API.patch(
+//         `/episode/${selectedEpisode.id}`,
+//         formData,
+//         config
+//       );
+
+//       console.log("update Episode success : ", response);
+ 
+// closeModal()
+//       Swal.fire({
+//         position: "center",
+//         icon: "success",
+//         title: "Update Episode Success",
+//         showConfirmButton: false,
+//         timer: 2000,
+//       });
+//     } catch (error) {
+//       console.log(error);
+
+//       Swal.fire({
+//         position: "center",
+//         icon: "error",
+//         title: "Update Episode Failed",
+//         showConfirmButton: false,
+//         timer: 1500,
+//       });
+//     }
+//   };
+
+ 
+
+//   const customStyles = {
+//     content: {
+//       top: "50%",
+//       left: "50%",
+//       right: "auto",
+//       bottom: "auto",
+//       marginRight: "-50%",
+//       transform: "translate(-50%, -50%)",
+//       width: "400px",
+//       border: "none",
+//       borderRadius: "5px",
+//       boxShadow: "0 2px 8px rgba(0, 0, 0, 0.25)",
+//       padding: "20px",
+//       background: "#4682B4",
+//     },
+//     overlay: {
+//       background: "rgba(0, 0, 0, 0.5)",
+//     },
+//   };
+
+//   return (
+//     <Modal
+//       isOpen={isOpen}
+//       onRequestClose={closeModal}
+//       contentLabel="Add Episode Modal"
+//       style={customStyles}
+//     >
+//       <h2 style={{ color: "yellow", marginBottom: "20px" }}>
+//         <FaRegEdit /> Edit Episode
+//       </h2>
+//       <form onSubmit={updateEpisode}>
+//         <div className="form-group">
+//           <label style={{ color: "red", fontSize: "16px", marginBottom: "5px" }} htmlFor="title">
+//             Title
+//           </label>
+//           <input
+//             type="text"
+//             className="form-control"
+//             id="episodeTitle"
+//             placeholder="Masukan Title"
+//             name="title"
+//             value={episodeData?.title || ""}
+//             onChange={handleInputChange}
+//             style={{ borderRadius: "5px", padding: "8px" }}
+//           />
+//         </div>
+//         <div className="form-group">
+//           <label style={{ color: "red", fontSize: "16px", marginBottom: "5px" }} htmlFor="episodeLink">
+//             Thumbnail Film
+//           </label>
+//           <input
+//             type="file"
+//             className="form-control"
+//             placeholder="asdas"
+//             cursor="pointer"
+//             id="episodeLink"
+//             name="thumbnailfilm"
+//         onChange={handleInputChange}
+//             style={{ borderRadius: "5px", padding: "8px" }}
+//           />
+//         </div>
+
+//         <div className="form-group">
+//           <label style={{ color: "red", fontSize: "16px", marginBottom: "5px" }} htmlFor="episodeLink">
+//             Link Film
+//           </label>
+//           <input
+//             type="text"
+//             className="form-control"
+//             placeholder="Masukan Link"
+//             id="episodeLink"
+//             name="linkfilm"
+//             value={episodeData?.linkfilm || ""}
+//             onChange={handleInputChange}
+//             style={{ borderRadius: "5px", padding: "8px" }}
+//           />
+//         </div>
+
+//         <button type="submit" className="btn btn-danger" style={{ marginTop: "20px" }}>
+//           Submit
+//         </button>
+//       </form>
+//     </Modal>
+//   );
+// }
+
+// export default UpdateEpisodeModal;
+
 import Modal from "react-modal";
 import { useState } from "react";
 import { FaRegEdit} from "react-icons/fa";
 import { useParams } from "react-router-dom";
-import { useMutation,useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import Swal from "sweetalert2";
 import { API } from "../config/api";
 import { useEffect } from "react";
 
-function UpdateEpisodeModal({ isOpen, closeModal }) {
-  const [updateEpisode, setUpdateEpisode] = useState({});
-  const {id} = useParams()
-  
-  
-  function handleSubmit(event) {
-    event.preventDefault();
-  }
-  
-  const [episodeId, setEpisodeId] = useState([]);
-  let { data: episodes, } = useQuery("episodesCache", async () => {
-    const response = await API.get("/episodes");
-    return response.data.data;
-  });
+function UpdateEpisodeModal({ isOpen, closeModal, selectedEpisode,refetch }) {
+  const [episodeData, setEpisodeData] = useState({});
+  const [imageUrl, setImageUrl] = useState("");
+ 
+
   useEffect(() => {
-    setEpisodeId(episodes);
-  }, [episodes]);
-  
-  
-  const handleChange = (e) => {
-    setUpdateEpisode({
-      ...updateEpisode,
-      [e.target.name]:
-      e.target.type === "file" ? e.target.files : e.target.value,
-    });
+    setEpisodeData(selectedEpisode);
+  }, [selectedEpisode]);
+
+  const handleInputChange = (event) => {
+    const { name, value, type, files } = event.target;
+
+    if (type === "file") {
+      setEpisodeData({
+        ...episodeData,
+        [name]: files,
+      });
+
+      const url = URL.createObjectURL(files[0]);
+      setImageUrl(url);
+    } else {
+      setEpisodeData({
+        ...episodeData,
+        [name]: value,
+      });
+    }
   };
 
-  const updateButtonHandler = useMutation(async (e) => {
-    closeModal();
+  const updateEpisode = async (event) => {
+    event.preventDefault();
+
     try {
-      e.preventDefault();
-      
+      const formData = new FormData();
+      formData.append("title", episodeData.title);
+      formData.append("linkfilm", episodeData.linkfilm);
+
+      if (episodeData.thumbnailfilm) {
+        formData.append("thumbnailfilm", episodeData.thumbnailfilm[0]);
+      }
+      // onSave(formData);
+
       const config = {
         headers: {
-          "Content-type": "multipart/form-data",
+          "Content-Type": "multipart/form-data",
         },
       };
 
-      if (updateEpisode.episode_id === "") {
-        setUpdateEpisode({ ...updateEpisode, EpisodeID: episodeId[0]?.id });
-      }
+      const response = await API.patch(
+        `/episode/${selectedEpisode.id}`,
+        formData,
+        config
+      );
 
-      
-
-      const formData = new FormData();
-      formData.set("title", updateEpisode.title);
-      formData.set("linkfilm", updateEpisode.linkfilm);
-      formData.set("film_id",updateEpisode.id)
-      formData.set(
-        "thumbnailfilm",
-        updateEpisode?.thumbnailfilm[0],
-        updateEpisode?.thumbnailfilm[0]?.name  
-        );
-        
-        console.log(formData);
-
-        const response = await API.patch(`/episode/${id}`, formData, config);
-        console.log("add episode success : ", response);
-
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Add Episode Success",
-          showConfirmButton: false,
-          timer: 2000,
-        });
-      
+      console.log("update Episode success : ", response);
+ 
+closeModal()
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Update Episode Success",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+      refetch()
     } catch (error) {
-      console.log("erorr response",error.response)
+      console.log(error);
+
       Swal.fire({
         position: "center",
         icon: "error",
-        title: "Add Episode Failed",
+        title: "Update Episode Failed",
         showConfirmButton: false,
         timer: 1500,
       });
-      console.log(error);
     }
-  });
-  
-    
+  };
+
+ 
+
   const customStyles = {
     content: {
       top: "50%",
@@ -101,7 +274,7 @@ function UpdateEpisodeModal({ isOpen, closeModal }) {
       borderRadius: "5px",
       boxShadow: "0 2px 8px rgba(0, 0, 0, 0.25)",
       padding: "20px",
-      background: "#4682B4",
+      background: "#343a40",
     },
     overlay: {
       background: "rgba(0, 0, 0, 0.5)",
@@ -115,10 +288,12 @@ function UpdateEpisodeModal({ isOpen, closeModal }) {
       contentLabel="Add Episode Modal"
       style={customStyles}
     >
-      <h2 style={{ color: "	GreenYellow", marginBottom: "20px" }}><FaRegEdit/> Edit Episode</h2>
-      <form onSubmit={(e)=> updateButtonHandler.mutate(e)}>
+      <h2 style={{ color: "yellow", marginBottom: "20px" }}>
+        <FaRegEdit /> Edit Episode
+      </h2>
+      <form onSubmit={updateEpisode}>
         <div className="form-group">
-          <label style={{ color: "red", fontSize:"16px", marginBottom: "5px" }} htmlFor="title">
+          <label style={{ color: "red", fontSize: "16px", marginBottom: "5px" }} htmlFor="title">
             Title
           </label>
           <input
@@ -127,7 +302,8 @@ function UpdateEpisodeModal({ isOpen, closeModal }) {
             id="episodeTitle"
             placeholder="Masukan Title"
             name="title"
-            onChange={handleChange}
+            value={episodeData?.title || ""}
+            onChange={handleInputChange}
             style={{ borderRadius: "5px", padding: "8px" }}
           />
         </div>
@@ -142,7 +318,7 @@ function UpdateEpisodeModal({ isOpen, closeModal }) {
             cursor="pointer"
             id="episodeLink"
             name="thumbnailfilm"
-            onChange={handleChange}
+        onChange={handleInputChange}
             style={{ borderRadius: "5px", padding: "8px" }}
           />
         </div>
@@ -157,7 +333,8 @@ function UpdateEpisodeModal({ isOpen, closeModal }) {
             placeholder="Masukan Link"
             id="episodeLink"
             name="linkfilm"
-            onChange={handleChange}
+            value={episodeData?.linkfilm || ""}
+            onChange={handleInputChange}
             style={{ borderRadius: "5px", padding: "8px" }}
           />
         </div>

@@ -7,6 +7,6 @@ type EpisodeResponse struct {
 	Title         string              `json:"title" from:"title"  gorm:"type: varchar(255)"`
 	Thumbnailfilm string              `json:"thumbnailfilm" gorm:"type: varchar(255)"`
 	Linkfilm      string              `json:"linkfilm" gorm:"type:text"`
-	Film          int                 `json:"film_id"`
-	FilmID        models.FilmResponse `json:"film"`
+	FilmID        int                 `json:"film_id"`
+	Film          models.FilmResponse `json:"film"`
 }

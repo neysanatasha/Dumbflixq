@@ -175,7 +175,7 @@ func convertResponseEpisode(u models.Episode) episodedto.EpisodeResponse {
 		Title:         u.Title,
 		Thumbnailfilm: u.Thumbnailfilm,
 		Linkfilm:      u.Linkfilm,
-		Film:          u.FilmID,
-		FilmID:        models.FilmResponse(u.Film),
+		FilmID:        u.FilmID,
+		Film:          models.FilmResponse(u.Film),
 	}
 }

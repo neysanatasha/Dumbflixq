@@ -36,7 +36,7 @@ export default function Card() {
                         <div className="d-flex justify-content-start gap-4">
                           <div key={item.id} className="mt-2 mb-5 rounded" style={{ width: "200px" }}>
                           <div style={{ position: "relative" }}>
-                            <img className="rounded" src={`http://localhost:5000/uploads/${item.thumbnailfilm}`} width="200px" height="300px"
+                            <img className="rounded" src={`${item.thumbnailfilm}`} width="200px" height="300px"
                                 style={{ objectFit: "cover" }} alt="Card" />
                                 <div style={{ position: "absolute",top: "50%",left: "50%", transform: "translate(-50%, -50%)" }}>
                                   <FaPlay style={{ fontSize:"40px", color:"white"}} />

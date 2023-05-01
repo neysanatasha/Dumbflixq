@@ -52,7 +52,7 @@ function ListFilm() {
           <Link to={`/detail/${film?.id}`}>
             <img
               className="card-img-top"
-              src={`http://localhost:5000/uploads/${film?.thumbnailfilm}`}
+              src={`${item.thumbnailfilm}`}
               alt={film?.title}
             />
           </Link>

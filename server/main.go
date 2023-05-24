@@ -36,5 +36,5 @@ func main() {
 	port := os.Getenv("PORT")
 
 	fmt.Println("Server starting", port)
-	e.Logger.Fatal(e.Start("localhost:" + port))
+	e.Logger.Fatal(e.Start(":" + port))
 }
